@@ -263,7 +263,7 @@ def attention_fn(
         attention_probs = self.scale_mask_softmax(attention_scores, attention_mask.contiguous())
     else:
         if not (attention_mask == 0).all():
-            attention_scores.masked_fill_(attention_mask.byte(), -10000.0)
+            attention_scores.masked_fill_(attention_mask.bool(), -10000.0)
         dtype = attention_scores.type()
         attention_scores = attention_scores.float()
         attention_scores = attention_scores * query_key_layer_scaling_coeff
