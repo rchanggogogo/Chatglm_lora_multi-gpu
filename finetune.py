@@ -1,9 +1,11 @@
 from transformers import TrainingArguments
 from transformers import Trainer, HfArgumentParser
 from transformers import AutoTokenizer,AutoConfig,AutoModel
+from transformers.integrations import TensorBoardCallback
+
 from modeling_chatglm import ChatGLMForConditionalGeneration
 from transformers.trainer_callback import TrainerCallback, TrainerState, TrainerControl
-
+from torch.utils.tensorboard import SummaryWriter
 import torch
 import torch.nn as nn
 from peft import get_peft_model, LoraConfig, TaskType
@@ -192,7 +194,7 @@ def main():
     if finetune_args.is_resume and finetune_args.resume_path:
         print("=====>load lora pt from =====》:", finetune_args.is_resume, finetune_args.resume_path)
         model.load_state_dict(torch.load(finetune_args.resume_path), strict=False)
-
+    writer = SummaryWriter()
     # load dataset
     dataset = datasets.load_from_disk(finetune_args.dataset_path)
     
@@ -202,6 +204,7 @@ def main():
         train_dataset=dataset,
         args=training_args,
         data_collator=data_collator,
+        callbacks=[TensorBoardCallback(writer)]
     )
     trainer.add_callback(ClearCacheCallback(1000))
 
