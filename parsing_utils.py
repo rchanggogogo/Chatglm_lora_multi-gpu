@@ -9,7 +9,7 @@ import os
 from tqdm import tqdm
 
 
-# from unstructured.partition.text import partition_text
+from unstructured.partition.text import partition_text
 #
 # elements = partition_text('/8t/workspace/lchang/models/data/only_jojo_with_instruction.txt')
 # for element in elements:

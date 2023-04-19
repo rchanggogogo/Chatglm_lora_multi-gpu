@@ -176,7 +176,6 @@ with gr.Blocks(css=".gradio-container {background-color: lightgray}") as block:
     history_state = gr.State()
     memory_state = gr.State()
 
-
     # generate state
     top_p_state = gr.State(0.9)
     temperature_state = gr.State(0.85)
@@ -213,10 +212,10 @@ with gr.Blocks(css=".gradio-container {background-color: lightgray}") as block:
         )
 
     with gr.Tab("Settings"):
-        top_p_slider = gr.Slider(label="top_p",  maximum=1, step=0.01, value=0.9)
-        temperature_slider = gr.Slider(label="temperature",  maximum=1, step=0.01, value=0.85)
+        top_p_slider = gr.Slider(label="top_p", maximum=1, step=0.01, value=0.9)
+        temperature_slider = gr.Slider(label="temperature", maximum=1, step=0.01, value=0.85)
         k_slider = gr.Slider(label="k", mininum=1, maximum=10, step=1, value=1)
-        threshold_slider = gr.Slider(label="threshold",  maximum=1, step=0.1, value=0.8)
+        threshold_slider = gr.Slider(label="threshold", maximum=1, step=0.1, value=0.8)
         top_p_slider.change(update_foo,
                             inputs=[top_p_slider, top_p_state],
                             outputs=[top_p_state])
@@ -241,14 +240,12 @@ with gr.Blocks(css=".gradio-container {background-color: lightgray}") as block:
             """)
     # use enter to submit
     message.submit(chat, inputs=[message, history_state, top_p_state, temperature_state],
-                   outputs=[chatbot, history_state],show_progress=True, queue=False)
+                   outputs=[chatbot, history_state], show_progress=True, queue=False)
     submit.click(chat, inputs=[message, history_state, top_p_state, temperature_state],
                  outputs=[chatbot, history_state])
     clear_submit.click(reset_memory, inputs=[history_state],
                        outputs=[chatbot, history_state, memory_state])
     upload_button.click(add_memory, inputs=[upload_file],
                         outputs=[upload_button])
-
-
 
 block.launch(server_port=8090, server_name='0.0.0.0', debug=True)

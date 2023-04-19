@@ -92,7 +92,7 @@ class CustomMilvus(Milvus):
         _, docs_and_scores = self._worker_search(
             query, k, param, expr, partition_names, round_decimal, timeout, **kwargs
         )
-        threshold = kwargs.get('threshold', 0.8)
+        threshold = kwargs.get('threshold', 0.0)
         final_result = []
         for document, score, _ in docs_and_scores:
             if score < threshold:
